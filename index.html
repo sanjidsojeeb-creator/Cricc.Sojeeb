@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CriccSojeeb Live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.js"></script>
+
+<style>
+body{
+  margin:0;
+  background:#050b18;
+  font-family:Arial, sans-serif;
+  color:#fff;
+}
+.header{
+  background:#0a1f44;
+  padding:14px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+}
+.sub{font-size:13px;opacity:.8}
+.player-box{margin:10px}
+.info{
+  margin:10px;
+  background:#0a1f44;
+  padding:10px;
+  border-radius:10px;
+  font-size:14px;
+}
+.counter{color:#00ffcc;font-weight:bold}
+.tg-box{
+  margin:15px;
+  padding:15px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#0a1f44,#020617);
+  text-align:center;
+}
+.tg-box a{
+  display:block;
+  margin:10px 0;
+  padding:13px;
+  border-radius:10px;
+  background:#0088cc;
+  color:#fff;
+  font-weight:bold;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<div class="header">
+  CriccSojeeb Live
+  <div class="sub">Live Sports Streaming</div>
+</div>
+
+<div class="info">
+ 🔴 LIVE NOW <br>
+ 👁️ Watching: <span class="counter" id="users">0</span>
+</div>
+
+<div class="player-box">
+  <video id="player" controls playsinline></video>
+</div>
+
+<div class="tg-box">
+  <a href="https://t.me/CriccSojeeb" target="_blank">
+    🔔 Join Telegram for Live Match Links
+  </a>
+</div>
+
+<script>
+// 🔐 Basic Inspect Protection
+document.onkeydown = function(e){
+  if(e.keyCode==123) return false;
+  if(e.ctrlKey && e.shiftKey && e.keyCode==73) return false;
+};
+
+// 🔔 Telegram Join Popup (Join / Skip)
+if(!localStorage.getItem("tg_skip")){
+  setTimeout(()=>{
+    if(confirm("Join CriccSojeeb Telegram Channel for live links?")){
+      window.location.href="https://t.me/CriccSojeeb";
+    }else{
+      localStorage.setItem("tg_skip","yes");
+    }
+  },1500);
+}
+
+/* ========== ADMIN PANEL (CHANNEL LIST) ========== */
+const CHANNELS = {
+  criclife: {
+    name:"CricLife",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=303627"
+  },
+  cricbuzz: {
+    name:"Cricbuzz",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=303629"
+  },
+  willow: {
+    name:"Willow",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=13141"
+  },
+  willow2: {
+    name:"Willow 2",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=282231"
+  },
+  sky: {
+    name:"Sky Sports",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=10527"
+  },
+  tnt: {
+    name:"TNT Sports",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=77413"
+  },
+  fox: {
+    name:"Fox Sports",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=197185"
+  },
+  star: {
+    name:"Star Sports",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=276736"
+  },
+  sony: {
+    name:"Sony Sports",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=276737"
+  },
+  zee: {
+    name:"Zee Cinema",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=276907"
+  },
+  geo: {
+    name:"Geo Super",
+    url:"https://allinonereborn.xyz/mix.m3u8/live4.php?id=49242"
+  },
+  fancode: {
+    name:"FanCode",
+    url:"https://bd-mc-fdlive.fancode.com/mumbai/138739_english_hls_3e7a73d0358892_1ta-di_h264/index.m3u8"
+  }
+};
+
+/* ========== STREAM SELECTOR ========== */
+const params = new URLSearchParams(window.location.search);
+const ch = params.get("ch");
+
+if(!ch || !CHANNELS[ch]){
+  alert("❌ Invalid or Private Stream Link");
+  throw new Error("No stream selected");
+}
+
+const source = CHANNELS[ch].url;
+const video = document.getElementById("player");
+
+// ▶️ HLS Player
+if(Hls.isSupported()){
+  const hls = new Hls({autoStartLoad:true});
+  hls.loadSource(source);
+  hls.attachMedia(video);
+}else{
+  video.src = source;
+}
+
+// 🎛 Plyr UI
+new Plyr(video,{
+  quality:{
+    default:'auto',
+    options:['auto',1080,720,480,360],
+    forced:true
+  }
+});
+
+// 👁️ Fake User Counter
+let users = Math.floor(Math.random()*600)+700;
+document.getElementById("users").innerText = users;
+setInterval(()=>{
+  users += Math.floor(Math.random()*5)-2;
+  if(users < 500) users = 500;
+  document.getElementById("users").innerText = users;
+},3000);
+</script>
+
+</body>
+</html>
