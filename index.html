@@ -57,13 +57,7 @@ body{
 
 <div class="header">
   CriccSojeeb Live
-  <div class="sub">Live Sports Streaming</div>
-</div>
-
-<div class="info">
- 🔴 LIVE NOW <br>
- 👁️ Watching: <span class="counter" id="users">0</span>
-</div>
+</div>>
 
 <div class="player-box">
   <video id="player" controls playsinline></video>
@@ -165,6 +159,13 @@ if(Hls.isSupported()){
 }else{
   video.src = source;
 }
+  <video id="player"
+  controls
+  playsinline
+  webkit-playsinline
+  preload="auto">
+</video>
+
 
 // 🎛 Plyr UI
 new Plyr(video,{
@@ -187,3 +188,4 @@ setInterval(()=>{
 
 </body>
 </html>
+
